@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"errors"
+)
 
 var ones = [][]string {
 	{"один ",   "одна "},
@@ -91,6 +95,22 @@ func IntToNumeric(number int) string {
 	return result[0:len(result)-1]
 }
 
+func CheckNumber(stringNumber string) (intNumber int, err error) {
+	intNumber, err = strconv.Atoi(stringNumber)
+	if err != nil {
+		return 0, err
+	}
+	if intNumber < 0 {
+		return 0, errors.New("Ошибка: число меньше нуля")
+	}
+	if intNumber > 1000000 {
+		return 0, errors.New("Ошибка: число больше миллиона")
+	}
+	return intNumber, err
+}
+
 func main ()  {
+
+
 	fmt.Println(IntToNumeric(1000))
 }
