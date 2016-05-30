@@ -2,21 +2,22 @@ package main
 
 import "fmt"
 
-var ones = []string {
-	"один ",
-	"два ",
-	"три ",
-	"четыре ",
-	"пять ",
-	"шесть ",
-	"семь ",
-	"восемь ",
-	"девять "}
+var ones = [][]string {
+	{"один ",   "одна "},
+	{"два ",    "две "},
+	{"три ",    "три "},
+	{"четыре ", "четыре "},
+	{"пять ",   "пять "},
+	{"шесть ",  "шесть "},
+	{"семь ",   "семь "},
+	{"восемь ", "весемь "},
+	{"девять ", "девять"}}
 
-var triads = []string{
-	"",
-	"тысяча ",
-	"миллион "}
+var triads = [][]string{
+	// падежи
+	{"",         "",          ""},
+	{"тысяча ",  "тысячи ",   "тысяч "},
+	{"миллион ", "миллиона ", "миллионов "}}
 
 var onesTens = []string{
 	"одиннадцать ",
@@ -69,8 +70,20 @@ func IntToNumeric(number int) string {
 			triadNumeric += onesTens[triad/10-1]
 		}
 		if triad == 1 {
-			triadNumeric += ones[triad-1]
-			triadNumeric += triads[triadNumber]
+			triadNumeric += ones[triad-1][triadNumber]
+			triadNumeric += triads[triadNumber][0]
+		} else {
+			if triad >= 2 && triad <= 4 {
+				triadNumeric += ones[triad-1][triadNumber]
+				triadNumeric += triads[triadNumber][1]
+			} else {
+				if triad >= 5 && triad <= 9 {
+					triadNumeric += ones[triad-1][triadNumber]
+					triadNumeric += triads[triadNumber][2]
+				} else {
+					triadNumeric += triads[triadNumber][2]
+				}
+			}
 		}
 		result = triadNumeric + result
 		triadNumeric = ""
