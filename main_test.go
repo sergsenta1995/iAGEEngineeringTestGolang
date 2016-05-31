@@ -14,7 +14,8 @@ var testsForIntToNumeric = []testPairForIntToNumeric{
 	{10, "десять"},
 	{100, "сто"},
 	{1000, "одна тысяча"},
-	{123456, "сто двадцать три тысячи четыреста пятдесят шесть"}}
+	{1000000, "один миллион"},
+	{123456, "сто двадцать три тысячи четыреста пятьдесят шесть"}}
 
 func TestIntToNumeric(t *testing.T) {
 	for _, pair := range testsForIntToNumeric {
