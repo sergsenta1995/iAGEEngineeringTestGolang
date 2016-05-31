@@ -72,6 +72,10 @@ func IntToNumeric(intNumber int) (numeric string) {
 		triad := intNumber % 1000
 		intNumber /= 1000
 
+		if triad == 0 {
+			continue
+		}
+
 		if triad >= 100 {
 			triadNumeric += thousands[triad/100-1]
 			triad %= 100
@@ -95,17 +99,34 @@ func IntToNumeric(intNumber int) (numeric string) {
 				triadNumeric += ones[triad-1]
 				triadNumeric += triads[triadNumber][0]
 			}
-		} else { // Обработка окончаний
-			if triad >= 2 && triad <= 4 {
-				triadNumeric += ones[triad-1]
-				triadNumeric += triads[triadNumber][1]
-			} else {
-				if triad >= 5 && triad <= 9 {
-					triadNumeric += ones[triad-1]
-					triadNumeric += triads[triadNumber][2]
-				}
-			}
+			numeric = triadNumeric + numeric
+			triadNumeric = ""
+
+			fmt.Println("111")
+			continue
 		}
+		// Обработка окончаний
+		if triad >= 2 && triad <= 4 {
+			triadNumeric += ones[triad-1]
+			triadNumeric += triads[triadNumber][1]
+			numeric = triadNumeric + numeric
+			triadNumeric = ""
+			continue
+		}
+		if triad >= 5 && triad <= 9 {
+			triadNumeric += ones[triad-1]
+			triadNumeric += triads[triadNumber][2]
+			numeric = triadNumeric + numeric
+			triadNumeric = ""
+			continue
+		}
+
+
+
+		fmt.Println("end !!!!!!")
+
+		// Добавить окончание, если у числа нет разряда единиц.
+		triadNumeric += triads[triadNumber][2]
 		numeric = triadNumeric + numeric
 		triadNumeric = ""
 	}
