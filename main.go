@@ -19,12 +19,6 @@ var ones = []string {
 	"восемь ",
 	"девять "}
 
-var triads = [][]string{
-	// падежи
-	{"",         "",          ""},
-	{"тысяча ",  "тысячи ",   "тысяч "},
-	{"миллион ", "миллиона ", "миллионов "}}
-
 var onesTens = []string{
 	"одиннадцать ",
 	"двенадцать ",
@@ -58,20 +52,25 @@ var thousands = []string{
 	"восемьсот ",
 	"девятьсот "}
 
-// Особы индекс для тысячи, т. к. тысячи, заканчивающиеся на '1' имеют женски род
+var triads = [][]string{
+	// окончания
+	{"",         "",          ""},
+	{"тысяча ",  "тысячи ",   "тысяч "},
+	{"миллион ", "миллиона ", "миллионов "}}
+
+// Особый индекс для тысячи, т. к. тысячи, заканчивающиеся на '1' имеют женский род
 const thousand = 1
 
-func IntToNumeric(number int) string {
+func IntToNumeric(intNumber int) (numeric string) {
 	var triadNumeric string
-	var result string
 
-	if number == 0 {
+	if intNumber == 0 {
 		return "ноль"
 	}
 
-	for triadNumber := 0; number >= 1; triadNumber++ {
-		triad := number % 1000
-		number /= 1000
+	for triadNumber := 0; intNumber >= 1; triadNumber++ {
+		triad := intNumber % 1000
+		intNumber /= 1000
 
 		if triad >= 100 {
 			triadNumeric += thousands[triad/100-1]
@@ -96,7 +95,7 @@ func IntToNumeric(number int) string {
 				triadNumeric += ones[triad-1]
 				triadNumeric += triads[triadNumber][0]
 			}
-		} else {
+		} else { // Обработка окончаний
 			if triad >= 2 && triad <= 4 {
 				triadNumeric += ones[triad-1]
 				triadNumeric += triads[triadNumber][1]
@@ -107,11 +106,11 @@ func IntToNumeric(number int) string {
 				}
 			}
 		}
-		result = triadNumeric + result
+		numeric = triadNumeric + numeric
 		triadNumeric = ""
 	}
 	// Убрать лишний пробельный символ
-	return result[0:len(result)-1]
+	return numeric[0:len(numeric)-1]
 }
 
 func CheckNumber(stringNumber string) (intNumber int, err error) {
@@ -134,7 +133,7 @@ func main ()  {
 	stringNumber, _:= reader.ReadString('\n')
 	// Убрать символ конца строки - без него не преобразуется в число
 	stringNumber = stringNumber[0:len(stringNumber)-1]
-	
+
 	intNumber, err := CheckNumber(stringNumber)
 	if err == nil {
 		numeric := IntToNumeric(intNumber)
