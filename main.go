@@ -61,6 +61,11 @@ var triads = [][]string{
 // Особый индекс для тысячи, т. к. тысячи, заканчивающиеся на '1' имеют женский род
 const thousand = 1
 
+// Индексы для окончаний
+const ending1        = 0
+const ending2To4     = 1
+const ending0And5To9 = 2
+
 func IntToNumeric(intNumber int) (numeric string) {
 	var triadNumeric string
 
@@ -90,43 +95,31 @@ func IntToNumeric(intNumber int) (numeric string) {
 			triadNumeric += onesTens[triad/10-1]
 		}
 
+		// Добавить окончание, если у числа нет разряда единиц.
+		if triad == 0 {
+			triadNumeric += triads[triadNumber][ending0And5To9]
+		}
+
 		if triad == 1 {
 			// Только тысяча, заканчивающаяся на '1' может иметь женский род
 			if triadNumber == thousand {
 				triadNumeric += "одна "
-				triadNumeric += triads[triadNumber][0]
 			} else {
 				triadNumeric += ones[triad-1]
-				triadNumeric += triads[triadNumber][0]
 			}
-			numeric = triadNumeric + numeric
-			triadNumeric = ""
-
-			fmt.Println("111")
-			continue
+			triadNumeric += triads[triadNumber][ending1]
 		}
 		// Обработка окончаний
 		if triad >= 2 && triad <= 4 {
-			triadNumeric += ones[triad-1]
-			triadNumeric += triads[triadNumber][1]
-			numeric = triadNumeric + numeric
-			triadNumeric = ""
-			continue
+			triadNumeric += ones[triad - 1]
+			triadNumeric += triads[triadNumber][ending2To4]
 		}
+
 		if triad >= 5 && triad <= 9 {
-			triadNumeric += ones[triad-1]
-			triadNumeric += triads[triadNumber][2]
-			numeric = triadNumeric + numeric
-			triadNumeric = ""
-			continue
+			triadNumeric += ones[triad - 1]
+			triadNumeric += triads[triadNumber][ending0And5To9]
 		}
 
-
-
-		fmt.Println("end !!!!!!")
-
-		// Добавить окончание, если у числа нет разряда единиц.
-		triadNumeric += triads[triadNumber][2]
 		numeric = triadNumeric + numeric
 		triadNumeric = ""
 	}
